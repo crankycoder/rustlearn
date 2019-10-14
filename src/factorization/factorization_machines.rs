@@ -290,12 +290,12 @@ impl FactorizationMachine {
             let slice_start = feature_idx * self.num_components;
             let slice_stop = slice_start + self.num_components;
 
-            let mut component_row =
+            let component_row =
                 &mut self.latent_factors.as_mut_slice()[slice_start..slice_stop];
-            let mut gradsq_row = &mut self.latent_gradsq.as_mut_slice()[slice_start..slice_stop];
-            let mut applied_l2_row =
+            let gradsq_row = &mut self.latent_gradsq.as_mut_slice()[slice_start..slice_stop];
+            let applied_l2_row =
                 &mut self.latent_applied_l2.as_mut_slice()[slice_start..slice_stop];
-            let mut applied_l1_row =
+            let applied_l1_row =
                 &mut self.latent_applied_l1.as_mut_slice()[slice_start..slice_stop];
 
             for (component_value, (gradsq, (applied_l2, (applied_l1, component_sum_value)))) in
@@ -335,7 +335,7 @@ impl FactorizationMachine {
         T: IndexableMatrix,
         &'a T: RowIterable,
     {
-        let mut component_sum = &mut vec![0.0; self.num_components][..];
+        let component_sum = &mut vec![0.0; self.num_components][..];
 
         for (row, &true_y) in X.iter_rows().zip(y.data().iter()) {
             let y_hat = sigmoid(self.compute_prediction(&row, component_sum));
@@ -398,7 +398,7 @@ where
 
         let mut data = Vec::with_capacity(X.rows());
 
-        let mut component_sum = &mut vec![0.0; self.num_components][..];
+        let component_sum = &mut vec![0.0; self.num_components][..];
 
         for row in X.iter_rows() {
             let prediction = self.compute_prediction(&row, component_sum);
